@@ -1,5 +1,7 @@
+from turtle import textinput
 from django.db import models
 from django.contrib.auth.models import User
+from django.forms import Textarea
 
 class Userpost(models.Model):
     name = models.CharField(max_length=30)
@@ -30,3 +32,7 @@ class Ranking(models.Model):
         return self.name_course
 
 
+class Comment(models.Model):
+    author = models.CharField(max_length=30)
+    text   = models.TextField()
+    due_date = models.DateField(auto_now=True)

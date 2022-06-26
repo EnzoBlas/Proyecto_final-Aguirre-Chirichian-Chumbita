@@ -1,3 +1,4 @@
+from textwrap import TextWrapper
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -10,7 +11,7 @@ class RankingForm(forms.Form):
 
 class PostForm(forms.Form):
     title = forms.CharField(max_length=40) 
-    content = forms.CharField()
+    content = forms.CharField(widget=forms.Textarea)
 
 class RankingForm(forms.Form):
     name_course = forms.CharField(max_length=15) 
@@ -28,3 +29,6 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
         help_texts = {k: "" for k in fields}
+
+class Comment(forms.Form):
+    content = forms.CharField(widget=forms.Textarea)
