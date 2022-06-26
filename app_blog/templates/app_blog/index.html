@@ -27,10 +27,10 @@
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link active" href="/app_blog/">Inicio</a></li>
                         <li class="nav-item"></li>
-                        <li class="nav-item"><a class="nav-link" href="/app_blog/search">Todas las publicaciones</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/app_blog/post_list">Todas las publicaciones</a></li>
                         <li class="nav-item"><a class="nav-link" href="/app_blog/ranking_list">Ranking de cursos&nbsp;</a></li>
                         {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="/app_blog/post-form">Crear publicación</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/app_blog/post_add">Crear publicación</a></li>
                     </ul>
                     <a class="btn btn-primary ms-md-2" role="button" href="{% url 'app_blog:user-logout' %}" style="background: #49535c;border-color: rgb(13,14,16);">Cerrar Sesión</a>
                     {% else %}
@@ -56,9 +56,9 @@
             <div class="container">
                 <div class="d-flex justify-content-center align-items-center content">
                     {% if user.is_authenticated %}
-                    <h3>¿Deseas participar en el CoderBlog?</h3><a class="btn btn-outline-primary btn-lg" role="button" href="/app_blog/post-form"  style="background: #49535c;border-color: rgb(13,14,16);color: rgb(248, 248, 248);">Crear publicación</a>
+                    <h3>¿Deseas participar en el CoderBlog?</h3><a class="btn btn-outline-primary btn-lg" role="button" href="/app_blog/post_add"  style="background: #49535c;border-color: rgb(13,14,16);color: rgb(248, 248, 248);">Crear publicación</a>
                     {% else %}
-                    <h3>¿Deseas participar en el CoderBlog?</h3><a class="btn btn-outline-primary btn-lg" role="button" href="/app_blog/post-form"  style="background: #49535c;border-color: rgb(13,14,16);color: rgb(248, 248, 248);">Inicia sesión</a>
+                    <h3>¿Deseas participar en el CoderBlog?</h3><a class="btn btn-outline-primary btn-lg" role="button" href="/app_blog/post_add"  style="background: #49535c;border-color: rgb(13,14,16);color: rgb(248, 248, 248);">Inicia sesión</a>
                     {% endif %}
                 </div>
             </div>

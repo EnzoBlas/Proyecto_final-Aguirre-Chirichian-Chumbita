@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Userpost(models.Model):
     name = models.CharField(max_length=30)
@@ -11,7 +12,7 @@ class Userpost(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=30)
     author = models.CharField(max_length=30)
-    text = models.TextField()
+    content = models.TextField()
     due_date = models.DateField(auto_now=True)
 
     def __str__(self):
@@ -20,10 +21,12 @@ class Post(models.Model):
 
 class Ranking(models.Model):
     name_course = models.CharField(max_length=30)
+    author = models.CharField(max_length=30)
     opinion = models.TextField()
     score = models.IntegerField()
-    author = models.CharField(max_length=30)
     due_date = models.DateField(auto_now=True)
     
     def __str__(self):
         return self.name_course
+
+

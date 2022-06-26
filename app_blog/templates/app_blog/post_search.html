@@ -1,0 +1,36 @@
+{% extends "app_blog/index.html" %}
+{% load static %}
+{% block app_blog_content %} 
+
+
+<hr></hr>
+
+<form action="/app_blog/post_search" method="GET">
+    <div class="d-flex justify-content-center align-items-center content">
+    <p style="text-align: center;margin: 3px;font-size: 20px;font-weight: bold;color: rgb(187,187,187);">Buscar publicaciones anteriores</p>
+    <input type="text" name="all_search" id="post_name_or_body" >
+    <ul class="nav-item"></ul>
+    <ul class="nav-item"></ul>
+    <input type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)" value="Buscar" />
+    </div>
+</form>
+
+</form>
+
+<hr></hr>
+
+{% if posts %}
+    {% for post in posts %}
+    <ul class="nav-item"><a class="nav-link active" href="{% url 'app_blog:post-detail' post.id %}">
+        <div class="container" style="background: #505458;">
+        <p style="text-align: left;margin: 3px;font-size: 30px;font-weight: bold;color: rgb(216, 216, 216);">{{post.title}}</p>
+        <p style="margin: 23px;color: rgb(216, 216, 216);font-size: 19px;">{{post.content}}</p>
+        <p style="font-size: 12px;font-weight: bold;color: rgb(216, 216, 216);">{{post.author_id}} - {{post.due_date}}</p>
+
+    </a></ul>
+
+    <hr style="color: rgba(216, 216, 216, 0.501);"/>
+
+    {% endfor %}
+{% endif %}
+{% endblock %}

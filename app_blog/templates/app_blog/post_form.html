@@ -1,18 +1,18 @@
 {% extends "app_blog/index.html" %}
 {% load static %}
 {% block app_blog_content %} 
-<h2>Crea un nuevo post</h2>
+<h2>Crea una nueva publicación</h2>
 <hr></hr>
-{% if user.is_authenticated %}
+
 <form action="" method="POST">
     {% csrf_token %}
 
     {{ post_form.as_p }}
+    {{ form.as_p }}
  
     <input type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)" value="Crear Post" />
 
 </form>
 
-{%endif%}
 
 {% endblock %}

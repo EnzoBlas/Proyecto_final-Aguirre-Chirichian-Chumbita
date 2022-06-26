@@ -1,13 +1,11 @@
-from datetime import date, datetime
-from django.shortcuts import render
+from urllib import request
 from django.shortcuts import render
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 
-from datetime import datetime
-
-from app_blog.models import Post,Userpost,Ranking
-from app_blog.form import User_form,Post_form,RankingForm,UserRegisterForm
+from app_blog.models import Post,Ranking
+from app_blog.form import UserRegisterForm, PostForm, RankingForm
 
 
 def index(request):
@@ -23,47 +21,64 @@ def index(request):
         template_name="app_blog/home.html",
     )
 
-
-def posts(request):
-    posts = Post.objects.all()
-
-    context_dict = {
-        'posts': posts
-    }
+def post_search(request):
+    context_dict = dict()
+    if request.GET['all_search']:
+        search_param = request.GET['all_search']
+        query = Q(title__contains=search_param)
+        query.add(Q(content__contains=search_param), Q.OR)
+        posts = Post.objects.filter(query)
+        context_dict = {
+            'posts': posts
+        }
 
     return render(
         request=request,
         context=context_dict,
-        template_name="app_blog/home.html",
+        template_name="app_blog/post_search.html",
     )
 
+def ranking_search(request):
+    context_dict = dict()
+    if request.GET['all_search']:
+        search_param = request.GET['all_search']
+        query = Q(name_course__contains=search_param)
+        query.add(Q(opinion__contains=search_param), Q.OR)
+        rankings = Ranking.objects.filter(query)
+        context_dict = {
+            'rankings': rankings
+        }
 
+    return render(
+        request=request,
+        context=context_dict,
+        template_name="app_blog/ranking_search.html",
+    )
 
 @login_required
-def post_form(request):
+def post_create(request):
     if request.method == 'POST':
-        post_form = Post_form(request.POST)
-        if post_form.is_valid():
-            data = post_form.cleaned_data
-            data_author=(str(Userpost.objects.filter(pk__contains=data['id_number']))[22:-3])
+        post_create = PostForm(request.POST)
+        if post_create.is_valid():
+            data = post_create.cleaned_data
             post = Post(
                 title=data['title'],
-                text=data['text'],
-                author=data_author
+                content=data['content'],  
+                author=request.user.username
                 )
             post.save()
 
             posts = Post.objects.all()
             context_dict = {
-                'posts': posts
+                'post_list': posts
             }
             return render(
                 request=request,
                 context=context_dict,
-                template_name="app_blog/home.html"
+                template_name="app_blog/post_list.html"
             )
 
-    post_form = Post_form(request.POST)
+    post_form = PostForm(request.POST)
     context_dict = {
         'post_form': post_form
      }
@@ -73,32 +88,38 @@ def post_form(request):
         template_name='app_blog/post_form.html'
     )
 
+@login_required
+def ranking_create(request):
+    if request.method == 'POST':
+        ranking_create = RankingForm(request.POST)
+        if ranking_create.is_valid():
+            data = ranking_create.cleaned_data
+            ranking = Ranking(
+                name_course=data['name_course'],
+                opinion=data['opinion'],
+                score=data['score'],
+                author=request.user.username
+                )
+            ranking.save()
 
-def ranking(request):
-    return render(
-        request=request,
-        template_name="app_blog/ranking.html"
-    )
+            rankings = Ranking.objects.all()
+            context_dict = {
+                'ranking_list': rankings
+            }
+            return render(
+                request=request,
+                context=context_dict,
+                template_name="app_blog/ranking_list.html"
+            )
 
-
-def search(request):
-    return render(request, "app_blog/search.html")
-
-def search_post(request):
-    context_dict = dict()
-    if request.GET['all_search']:
-        search_param = request.GET['all_search']
-        query = Q(title__contains=search_param)
-        query.add(Q(text__contains=search_param), Q.OR)
-        posts = Post.objects.filter(query)
-        context_dict = {
-            'posts': posts
-        }
-
+    ranking_form = RankingForm(request.POST)
+    context_dict = {
+        'ranking_form': ranking_form
+     }
     return render(
         request=request,
         context=context_dict,
-        template_name="app_blog/search.html",
+        template_name='app_blog/ranking_form.html'
     )
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -106,9 +127,10 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+
 class RankingListView(ListView):
     model = Ranking
-    template_name = "app_blog/ranking_list.html"
+    template_name = "app_blog/ranking-list.html"
 
 class RankingDetailView(DetailView):
     model = Ranking
@@ -116,17 +138,39 @@ class RankingDetailView(DetailView):
 
 class RankingCreateView(LoginRequiredMixin, CreateView):
     model = Ranking
-    success_url = reverse_lazy('app_blog:ranking_list')
+    success_url = reverse_lazy('app_blog:ranking-list')
     fields = ['name_course', 'opinion', 'score']
   
 class RankingUpdateView(LoginRequiredMixin, UpdateView):
     model = Ranking
-    success_url = reverse_lazy('app_ranking:ranking-list')
+    success_url = reverse_lazy('app_blog:ranking-list')
     fields = ['name_course', 'opinion', 'score']
 
 class RankingDeleteView(LoginRequiredMixin, DeleteView):
     model = Ranking
-    success_url = reverse_lazy('app_coder:Ranking-list')
+    success_url = reverse_lazy('app_blog:ranking-list')
+
+class RankingListView(ListView):
+    model = Ranking
+    template_name = "app_blog/ranking-list.html"
+
+class PostListView(ListView):
+    model = Post
+    template_name = "app_blog/post-list.html"
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "app_blog/post_detail.html"
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = "app_blog/post_form.html"
+    model = Post
+    success_url = reverse_lazy('app_blog:post-list')
+    fields = ['title', 'content']
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy('app_blog:post-list')
 
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
@@ -173,7 +217,7 @@ def register(request):
             return render(
                 request=request,
                 context=context_dict,
-                template_name="app_blog/created_user.html",
+                template_name="app_blog/login.html",
             )
         else:
             status=[1]
