@@ -2,12 +2,12 @@
 {% load static %}
 {% block app_blog_content %} 
 
-<h2>Crea una nueva valoracion</h2>
+<h2>Crea o edita una valoracion</h2>
 
 <form action="" method="POST">
     {% csrf_token %}
 
-    {{ ranking_form.as_p }}
+    {{ form.as_p }}
 
     <input type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)" value="Crear valoración" />
 

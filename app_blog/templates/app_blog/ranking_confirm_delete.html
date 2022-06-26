@@ -1,0 +1,16 @@
+{% extends "app_blog/index.html" %}
+{% load static %}
+{% block app_blog_content %} 
+
+<h2>Estás seguro de eliminar el Curso: {{ course.name }}?</h2>
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <input type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)" value="Si, eliminar" />
+    <a class="btn btn-primary" role="button" href="/app_blog/ranking_list/" style="background: #49535c;border-color: rgb(13,14,16)"> Ver valoraciones </a>
+
+</form>
+
+
+{% endblock %}

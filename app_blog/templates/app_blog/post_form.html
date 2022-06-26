@@ -3,7 +3,7 @@
 {% block app_blog_content %} 
 <h2>Crea un nuevo post</h2>
 <hr></hr>
-
+{% if user.is_authenticated %}
 <form action="" method="POST">
     {% csrf_token %}
 
@@ -13,5 +13,6 @@
 
 </form>
 
+{%endif%}
 
 {% endblock %}

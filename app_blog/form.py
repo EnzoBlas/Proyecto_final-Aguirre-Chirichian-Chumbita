@@ -8,16 +8,16 @@ class User_form(forms.Form):
     last_name = forms.CharField(max_length=30)
     email = forms.EmailField()
 
-class Ranking_form(forms.Form):
-    name_course = forms.CharField(max_length=40) 
-    opinion = forms.CharField()
-    score = forms.IntegerField(min_value=1, max_value=10)
-    id_number = forms.IntegerField()
+class RankingForm(forms.Form):
+    name_course = forms.CharField(label='Nombre del curso', max_length=40) 
+    opinion = forms.CharField(label='Comentario del curso')
+    score = forms.IntegerField(label='Nota del curso', min_value=1, max_value=10)
+
 
 class Post_form(forms.Form):
     title = forms.CharField(max_length=40) 
     text = forms.CharField()
-    id_number = forms.IntegerField()
+
 
 class UserRegisterForm(UserCreationForm):
 
