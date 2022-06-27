@@ -2,14 +2,15 @@
 {% load static %}
 {% block app_blog_content %}
 
-<h2>Carga tu foto de perfil</h2>
+<h2>Carga tu foto de perfil para poder participar del blog</h2>
 <hr></hr>
 <h3>Usuario: {{user.username}}</h3>
 
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Cargar Imagen</button>
+    <button type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)"> Cargar Imagen</button>
+
 </form>
 
 {% endblock %}

@@ -1,11 +1,12 @@
 import os
-from tkinter.tix import Form
 
 from django.shortcuts import render
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.forms.models import model_to_dict
 from django.contrib import messages
+from django.db.models import Count
+
 
 from app_blog.models import Post,Ranking,Comment,CommentRank,Avatar
 from app_blog.form import UserRegisterForm, PostForm, RankingForm, CommentForm, AvatarForm, UserEditForm
@@ -19,8 +20,7 @@ def get_avatar(request):
 
 def index(request):
     avatar = get_avatar(request)
-    posts = Post.objects.all()
-
+    posts = Post.objects.all().order_by('-pk')[0:5]
     context_dict = {
         'posts': posts,
         **avatar
@@ -34,13 +34,13 @@ def index(request):
 
 def profile(request):
     avatar = get_avatar(request)
-    
+
     if type(avatar) == None:
         context_dict ={}
     else:
         context_dict ={
-        **avatar
-    }
+           **avatar
+        }
 
     return render(
         request=request,
@@ -85,35 +85,39 @@ def ranking_search(request):
 @login_required
 def post_create(request):
     profile = Avatar.objects.filter(user=request.user.id)
-    if request.method == 'POST':
-        post_create = PostForm(request.POST, request.FILES)
-        if post_create.is_valid():
-            data = post_create.cleaned_data
-            image = request.FILES.get('image_post')
-            post = Post(
-                title=data['title'],
-                sub_title=data['sub_title'],
-                content=data['content'],  
-                author=request.user.username,
-                profile_picture=str(profile)[24:-3],
-                image_post = image
+    if Avatar.objects.filter(user=request.user.id).exists() == True:
+        if request.method == 'POST':
+            post_create = PostForm(request.POST, request.FILES)
+            if post_create.is_valid():
+                data = post_create.cleaned_data
+                image = request.FILES.get('image_post')
+                post = Post(
+                    title=data['title'],
+                    sub_title=data['sub_title'],
+                    content=data['content'],  
+                    author=request.user.username,
+                    profile_picture=str(profile)[24:-3],
+                    image_post = image
+                    )
+
+                post.save()
+
+                posts = Post.objects.all()
+                context_dict = {
+                    'post_list': posts
+                }
+                return render(
+                    request=request,
+                    context=context_dict,
+                    template_name="app_blog/post_list.html"
                 )
-
-            post.save()
-
-            posts = Post.objects.all()
-            context_dict = {
-                'post_list': posts
-            }
-            return render(
-                request=request,
-                context=context_dict,
-                template_name="app_blog/post_list.html"
-            )
+    else:
+        context_dict = {}
+        return redirect ("app_blog:avatar-load")
 
     post_form = PostForm(request.POST)
     context_dict = {
-        'post_form': post_form
+        'post_form': post_form,
      }
     return render(
         request=request,
@@ -161,34 +165,36 @@ def comment_post(request,pk):
         template_name= 'app_blog/post_detail.html'
     )
 
-
-
-
 @login_required
 def ranking_create(request):
     profile = Avatar.objects.filter(user=request.user.id)
-    if request.method == 'POST':
-        ranking_create = RankingForm(request.POST)
-        if ranking_create.is_valid():
-            data = ranking_create.cleaned_data
-            ranking = Ranking(
-                name_course=data['name_course'],
-                opinion=data['opinion'],
-                score=data['score'],
-                author=request.user.username,
-                profile_picture=str(profile)[24:-3]
-                )
-            ranking.save()
+    if Avatar.objects.filter(user=request.user.id).exists() == True:
+        if request.method == 'POST':
+            ranking_create = RankingForm(request.POST)
+            if ranking_create.is_valid():
+                data = ranking_create.cleaned_data
+                ranking = Ranking(
+                    name_course=data['name_course'],
+                    opinion=data['opinion'],
+                    score=data['score'],
+                    author=request.user.username,
+                    profile_picture=str(profile)[24:-3]
+                    )
+                ranking.save()
 
-            rankings = Ranking.objects.all()
-            context_dict = {
-                'ranking_list': rankings
-            }
-            return render(
-                request=request,
-                context=context_dict,
-                template_name="app_blog/ranking_list.html"
-            )
+                rankings = Ranking.objects.all()
+                context_dict = {
+                    'ranking_list': rankings
+                }
+                return render(
+                    request=request,
+                    context=context_dict,
+                    template_name="app_blog/ranking_list.html"
+                )
+    else: 
+        context_dict = {}
+        return redirect ("app_blog:avatar-load")
+
 
     ranking_form = RankingForm(request.POST)
     context_dict = {
@@ -250,10 +256,6 @@ class RankingListView(ListView):
     model = Ranking
     template_name = "app_blog/ranking-list.html"
 
-# class RankingDetailView(DetailView):
-#     model = Ranking
-#     template_name = "app_blog/ranking_detail.html"
-  
 class RankingUpdateView(LoginRequiredMixin, UpdateView):
     model = Ranking
     success_url = reverse_lazy('app_blog:ranking-list')
@@ -266,10 +268,12 @@ class RankingDeleteView(LoginRequiredMixin, DeleteView):
 class RankingListView(ListView):
     model = Ranking
     template_name = "app_blog/ranking-list.html"
+    ordering = ['-pk']
 
 class PostListView(ListView):
     model = Post
     template_name = "app_blog/post-list.html"
+    ordering = ['-pk']
 
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "app_blog/comment_form.html"
@@ -341,12 +345,7 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            context_dict = {}
-            return render(
-                request=request,
-                context=context_dict,
-                template_name="app_blog/home.html",
-            )
+            return redirect ("app_blog:avatar-load")
         else:
             status=[1]
 
