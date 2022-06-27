@@ -32,11 +32,11 @@
                         <li class="nav-item"><a class="nav-link" href="/app_blog/abouts">About</a></li>
                         {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="/app_blog/post_add">Crear publicación</a></li>
-                    </ul>
-                    <a class="btn btn-primary ms-md-2" role="button" href="{% url 'app_blog:user-logout' %}" style="background: #49535c;border-color: rgb(13,14,16);">Cerrar Sesión</a>
-                    {% else %}
-                    <a class="btn btn-primary ms-md-2" role="button" href="{% url 'app_blog:user-login' %}" style="background: #49535c;border-color: rgb(13,14,16);">Iniciar Sesión</a>
-                    {% endif %}
+                        <a class="btn btn-primary ms-md-2" role="button" href="{% url 'app_blog:profile' %}" style="background: #49535c;border-color: rgb(13,14,16);">Mi perfil</a>
+                        {% else %}
+                            <a class="btn btn-primary ms-md-2" role="button" href="{% url 'app_blog:user-login' %}" style="background: #49535c;border-color: rgb(13,14,16);">Iniciar Sesión</a>
+                         </div>
+                        {% endif %}
                 </div>
             </div>
         </nav>

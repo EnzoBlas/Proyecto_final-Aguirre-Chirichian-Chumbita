@@ -1,0 +1,34 @@
+{% extends "app_blog/index.html" %}
+{% load static %}
+{% block app_blog_content %} 
+
+<ul style="margin: 0px" class="nav-item"><a class="nav-link active"><img src="{{url}}" style="width: 130px;height: 130px;"></img></a></ul> 
+
+
+    <a class="btn btn-secondar ms-md-2" role="button" href="{% url 'app_blog:avatar-load' %}" style= "text-align:center; font-size: 10px; width: 120px;height: 27px; background: #49535c;border-color: rgb(13,14,16);">Cambiar avatar</a>
+
+
+<hr></hr>
+<ul style="text-align: start;margin: 3px;font-size: 34px;font-weight: bold;color: rgb(187,187,187);">Bienvenido {{ user.username }}</ul>
+        <div class="container" style="background: #505458;">
+            <hr/>
+            <hr/>
+            <ul style="text-align: left;margin: 3px;font-size: 28px;font-weight: bold;color: rgb(187,187,187);">Tus datos</ul>
+            <hr style="color: rgba(216, 216, 216, 0.741);"/>
+            <li style="text-align: left;margin: 3px;font-size: 20px;font-weight: bold;color: rgb(187,187,187);">Nombre: {{ user.first_name }}</li>
+            <li style="text-align: left;margin: 3px;font-size: 20px;font-weight: bold;color: rgb(187,187,187);">Apellido: {{ user.last_name }}</li>
+            <li style="text-align: left;margin: 3px;font-size: 20px;font-weight: bold;color: rgb(187,187,187);">Mail: {{ user.email }}</li>
+            <li style="text-align: left;margin: 3px;font-size: 20px;font-weight: bold;color: rgb(187,187,187);">Miembro desde: {{user.date_joined}}</li>
+            <hr style="color: rgba(216, 216, 216, 0.501);"/>
+            <div class="container" style="background: #505458;"></div>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'app_blog:user-update' %}"><img src="{% static 'app_blog/assets/img/edit.png' %}" style="width: 20px;height: 20px;">
+                        <p style="font-size: 16px;font-weight: bold;color: rgb(187,187,187);">Editar datos </p> 
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        
+
+{% endblock %}

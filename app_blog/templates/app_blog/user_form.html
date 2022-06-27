@@ -1,13 +1,13 @@
 {% extends "app_blog/index.html" %}
 {% load static %}
 {% block app_blog_content %} 
-<h2>Cree su nuevo usuario</h2>
+<h2>Edite sus datos</h2>
 <hr></hr>
 
 <form action="" method="POST">
     {% csrf_token %}
 
-    {{ user_form.as_p }}
+    {{ form.as_p }}
 
     <input type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)" value="Crear usuario" />
 
