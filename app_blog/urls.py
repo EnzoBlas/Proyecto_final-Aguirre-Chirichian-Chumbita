@@ -5,6 +5,7 @@ from django.contrib import admin
 app_name ='app_blog'
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('avatar/load', views.avatar_load, name='avatar-load'),
     path("", views.index, name='home'),
     path('login/', views.login_request, name='user-login'),
     path('logout/', views.logout_request, name='user-logout'),
@@ -14,6 +15,8 @@ urlpatterns = [
     path('post/<int:pk>/detail', views.PostDetailView.as_view(), name='post-detail'),
     path('post/<int:pk>/update', views.PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/delete', views.PostDeleteView.as_view(), name='post-delete'),
+    path('profile/', views.profile, name='profile'),
+    path('user_update/', views.user_update, name='user-update'),
     path('ranking_add/', views.ranking_create, name='ranking-add'),
     path('ranking_list/', views.RankingListView.as_view(), name='ranking-list'),
     path('ranking_search/', views.ranking_search, name='ranking_search'),
