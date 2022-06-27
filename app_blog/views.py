@@ -33,8 +33,11 @@ def index(request):
 
 def profile(request):
     avatar = get_avatar(request)
-
-    context_dict ={
+    
+    if type(avatar) == None:
+        context_dict ={}
+    else:
+        context_dict ={
         **avatar
     }
 
@@ -80,18 +83,21 @@ def ranking_search(request):
 
 @login_required
 def post_create(request):
-    avatar = get_avatar(request)
     profile = Avatar.objects.filter(user=request.user.id)
     if request.method == 'POST':
-        post_create = PostForm(request.POST)
+        post_create = PostForm(request.POST, request.FILES)
         if post_create.is_valid():
             data = post_create.cleaned_data
+            image = request.FILES.get('image_post')
             post = Post(
                 title=data['title'],
+                sub_title=data['sub_title'],
                 content=data['content'],  
                 author=request.user.username,
-                profile_picture=str(profile)[24:-3]
+                profile_picture=str(profile)[24:-3],
+                image_post = image
                 )
+
             post.save()
 
             posts = Post.objects.all()
@@ -106,8 +112,7 @@ def post_create(request):
 
     post_form = PostForm(request.POST)
     context_dict = {
-        'post_form': post_form,
-        **avatar
+        'post_form': post_form
      }
     return render(
         request=request,
@@ -117,7 +122,6 @@ def post_create(request):
 
 @login_required
 def ranking_create(request):
-    avatar = get_avatar(request)
     profile = Avatar.objects.filter(user=request.user.id)
     if request.method == 'POST':
         ranking_create = RankingForm(request.POST)
@@ -134,8 +138,7 @@ def ranking_create(request):
 
             rankings = Ranking.objects.all()
             context_dict = {
-                'ranking_list': rankings,
-                **avatar
+                'ranking_list': rankings
             }
             return render(
                 request=request,
@@ -145,8 +148,7 @@ def ranking_create(request):
 
     ranking_form = RankingForm(request.POST)
     context_dict = {
-        'ranking_form': ranking_form,
-        **avatar
+        'ranking_form': ranking_form
      }
     return render(
         request=request,
@@ -312,3 +314,4 @@ def avatar_load(request):
         context={"form": form,},
         template_name="app_blog/avatar_form.html",
     )
+

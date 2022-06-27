@@ -2,16 +2,18 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from app_blog.models import Avatar
+from app_blog.models import Avatar, Post
 
 class RankingForm(forms.Form):
     name_course = forms.CharField(label='Nombre del curso', max_length=40) 
     opinion = forms.CharField(label='Comentario del curso', widget=forms.Textarea)
     score = forms.IntegerField(label='Nota del curso', min_value=1, max_value=10)
 
-class PostForm(forms.Form):
-    title = forms.CharField(label='Titulo', max_length=40) 
-    content = forms.CharField(label='Contenido', widget=forms.Textarea)
+class PostForm(ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'sub_title', 'content', 'image_post']
+        help_texts = {k: "" for k in fields}
 
 class UserRegisterForm(UserCreationForm):
 

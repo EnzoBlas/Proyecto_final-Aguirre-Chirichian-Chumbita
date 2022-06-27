@@ -1,6 +1,8 @@
 from app_blog import views
 from django.urls import path
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name ='app_blog'
 urlpatterns = [
@@ -25,3 +27,6 @@ urlpatterns = [
     path('ranking/<int:pk>/delete', views.RankingDeleteView.as_view(), name='ranking-delete'),
     path('register', views.register, name='user-register'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

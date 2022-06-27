@@ -9,10 +9,12 @@ class Avatar(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=30)
+    sub_title = models.CharField(max_length=30)
     author = models.CharField(max_length=30)
     content = models.TextField()
     due_date = models.DateField(auto_now=True)
     profile_picture = models.ImageField(upload_to='avatars', null=True, blank=True)
+    image_post = models.ImageField(upload_to='images', null=True, blank=True)
 
     def __str__(self):
         return  self.title
