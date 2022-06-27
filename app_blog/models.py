@@ -37,7 +37,16 @@ class Comment(models.Model):
     author = models.CharField(max_length=30)
     text   = models.TextField()
     due_date = models.DateField(auto_now=True)
-    post_id = models.IntegerField(max_length=30)
+    post_id = models.IntegerField()
+
+    class Meta:
+        ordering = ['-due_date']
+
+class CommentRank(models.Model):
+    author = models.CharField(max_length=30)
+    text   = models.TextField()
+    due_date = models.DateField(auto_now=True)
+    rank_id = models.IntegerField()
 
     class Meta:
         ordering = ['-due_date']

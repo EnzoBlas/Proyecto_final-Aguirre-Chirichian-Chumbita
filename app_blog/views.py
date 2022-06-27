@@ -1,4 +1,5 @@
 import os
+from tkinter.tix import Form
 
 from django.shortcuts import render
 from django.db.models import Q
@@ -6,11 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.forms.models import model_to_dict
 from django.contrib import messages
 
-from app_blog.models import Post,Ranking,Comment
+from app_blog.models import Post,Ranking,Comment,CommentRank,Avatar
 from app_blog.form import UserRegisterForm, PostForm, RankingForm, CommentForm
 
-from app_blog.models import Post, Ranking, Avatar
-from app_blog.form import UserRegisterForm, PostForm, RankingForm, UserEditForm, AvatarForm
 
 def get_avatar(request):
     avatars = Avatar.objects.filter(user=request.user.id)
@@ -198,6 +197,46 @@ def ranking_create(request):
         context=context_dict,
         template_name='app_blog/ranking_form.html'
     )
+
+@login_required
+def comment_rank(request,pk):
+    ranking = Ranking.objects.get(pk=pk)
+    comments = CommentRank.objects.filter(rank_id=pk)
+    comment_create = CommentForm(request.POST)
+    if request.method == 'POST':
+        if comment_create.is_valid():
+            data    = comment_create.cleaned_data
+            comment = CommentRank(
+                author = request.user.username,
+                text = data['content'],
+                rank_id = pk
+                )
+            
+            comment.save()
+            comments = CommentRank.objects.filter(rank_id=pk)
+
+            context_dict = {
+                'comment_form': comment_create,
+                'ranking'   : ranking,
+                'comments' : comments
+            }
+            return render(
+                request      =request,
+                context      =context_dict,
+                template_name="app_blog/ranking_detail.html"
+            )
+
+    
+    context_dict = {
+        'comment_form': comment_create,
+        'comments'    : comments,
+        'ranking'        : ranking 
+     }
+    return render(
+        request      = request,
+        context      = context_dict,
+        template_name= 'app_blog/ranking_detail.html'
+    )
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -209,9 +248,9 @@ class RankingListView(ListView):
     model = Ranking
     template_name = "app_blog/ranking-list.html"
 
-class RankingDetailView(DetailView):
-    model = Ranking
-    template_name = "app_blog/ranking_detail.html"
+# class RankingDetailView(DetailView):
+#     model = Ranking
+#     template_name = "app_blog/ranking_detail.html"
   
 class RankingUpdateView(LoginRequiredMixin, UpdateView):
     model = Ranking

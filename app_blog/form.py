@@ -14,6 +14,9 @@ class PostForm(forms.Form):
     title = forms.CharField(label='Titulo', max_length=40) 
     content = forms.CharField(label='Contenido', widget=forms.Textarea)
 
+class CommentForm(forms.Form):
+    content = forms.CharField(widget=forms.Textarea) 
+
 class UserRegisterForm(UserCreationForm):
 
     first_name = forms.CharField(label='Nombre', min_length=3, max_length=12)
