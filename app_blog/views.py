@@ -204,7 +204,7 @@ class PostListView(ListView):
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "app_blog/comment_form.html"
     model = Comment
-    success_url = reverse_lazy('app_blog:post-list')
+    success_url = reverse_lazy('app_blog:post-list' )
     fields = ['text']
 
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
@@ -278,3 +278,9 @@ def register(request):
         template_name="app_blog/register.html",
     )
 
+def aboutsView(request):
+
+    return render(
+        request=request,
+        template_name="app_blog/abouts.html",
+    )

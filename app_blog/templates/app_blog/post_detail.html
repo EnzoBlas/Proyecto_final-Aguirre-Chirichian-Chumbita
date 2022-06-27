@@ -31,11 +31,15 @@
 
             {% if comments %}
                 {% for comment in comments %}
-                    <p style="margin: 23px;color: rgb(187,187,187);font-size: 19px;">{{comment.text}}</p>
+
+                    <p style="margin: 23px;color: rgb(2, 2, 2);font-size: 19px;background-color: rgb(221, 207, 207);">{{comment.text}}</p>
                     <p style="font-size: 12px;font-weight: bold;color: rgb(187,187,187);">{{comment.author}}-{{comment.due_date}}</p>
+                    <hr style="color: rgba(216, 216, 216, 0.501);"/>
                     {% if request.user.username == comment.author %}
-                    <a class="nav-link active" href="{% url 'app_blog:comment-update' comment.id %}">Editar</a>
-                    <a class="nav-link active" href="{% url 'app_blog:comment-delete' comment.id %}">Borrar</a>
+                    <nav class="navbar navbar-expand-md py-3">
+                        <a class="nav-link active" href="{% url 'app_blog:comment-update' comment.id %}">Editar</a>
+                        <a class="nav-link active" href="{% url 'app_blog:comment-delete' comment.id %}">Borrar</a>
+                    </nav>
                     {% endif %}
                 {% endfor %}
             {% endif %}

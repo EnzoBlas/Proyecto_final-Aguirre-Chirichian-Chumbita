@@ -23,4 +23,6 @@ urlpatterns = [
     path('ranking/<int:pk>/update', views.RankingUpdateView.as_view(), name='ranking-update'),
     path('ranking/<int:pk>/delete', views.RankingDeleteView.as_view(), name='ranking-delete'),
     path('register', views.register, name='user-register'),
+    path('abouts/',views.aboutsView,name='abouts'),
+
 ]
