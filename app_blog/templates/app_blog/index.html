@@ -7,7 +7,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - Brand</title>
+    <title>CoderBlog</title>
     <link rel="stylesheet" href="{% static 'app_blog\css\bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=DM+Sans&amp;display=swap">
@@ -30,7 +30,7 @@
                         <li class="nav-item"><a class="nav-link" href="/app_blog/post_list">Todas las publicaciones</a></li>
                         <li class="nav-item"><a class="nav-link" href="/app_blog/ranking_list">Ranking de cursos&nbsp;</a></li>
                         {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="/app_blog/post_add">Crear publicación</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/app_blog/message/">Mensajes</a></li>
                         <a class="btn btn-primary ms-md-2" role="button" href="{% url 'app_blog:profile' %}" style="background: #49535c;border-color: rgb(13,14,16);">Mi perfil</a>
                         <li class="nav-item"><a class="nav-link" href="{% url 'app_blog:user-logout' %}" style="color: rgb(87, 93, 101)">Cerrar sesión</a></li>
                         {% else %}
@@ -66,34 +66,27 @@
         </section>
         <footer class="text-white bg-dark">
             <div class="container py-4 py-lg-5">
-                <div class="row justify-content-right">
+                <div class="row justify-content-center">
                     <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
                         <h3 class="fs-6 text-white">Publicaciones</h3>
                         <ul class="list-unstyled">
                             <li><a class="link-light" href="/app_blog/">Inicio</a></li>
-                            <li><a class="link-light" href="/app_blog/user-form">Crear Usuario</a></li>
-                            <li><a class="link-light" href="/app_blog/search">Buscar publicación</a></li>
+                            <li><a class="link-light" href="/app_blog/post_list">Publicaciones</a></li>
+                            <li><a class="link-light" href="/app_blog/ranking_list">Ranking</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
                         <h3 class="fs-6 text-white">Contactenos</h3>
                         <ul class="list-unstyled">
-                            <li><a class="link-light" href="app_blog/ranking_list">Ranking</a></li>
+                            <li><a class="link-light" href="abouts">Sobre nosotros</a></li>
                             <li><a class="link-light" href="https://plataforma.coderhouse.com/chat">Cambios y sugerencias</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
-                        <h3 class="fs-6 text-white">Equipo</h3>
-                        <ul class="list-unstyled">
-                            <li><a class="link-light" href="app_blog/abouts">Sobre nosotros</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
                         <ul class="list-unstyled"></ul>
                     </div>
-                    <p></p>
-                    <div class="col-lg-3 text-right text-lg-start d-flex flex-column align-items-right order-first align-items-lg-start order-lg-last item social"><span href="app_blog/home"><img href="app_blog/home" src="{% static 'app_blog/assets/img/coder.png' %}" style="width: 35px;height: 35px;">&nbsp;CoderBlog</span>
-                        <div class="fw-bold d-flex align-items-right mb-2"></div>
+                    <div class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social" ><span><img src="{% static 'app_blog/assets/img/coder.png' %}" style="width: 35px;height: 35px;">&nbsp;CoderBlog</span>
+                        <div class="fw-bold d-flex align-items-center mb-2"><a class="active" href="#"></a></div>
                     </div>
                 </div>
                 <p class="text-muted copyright"></p>

@@ -4,17 +4,17 @@
 
 <p style="text-align: left;margin: 3px;font-size: 36px;font-weight: bold;color: rgb(187,187,187);">Mensajes</p>
     <hr></hr>
-    <a class="btn btn-outline-primary btn-lg" role="button" href="/app_blog/message_add/" style="background: #49535c;border-color: rgb(31, 35, 44);color: rgb(248, 248, 248); background-color: rgb(95, 95, 133);">Enviar Mensaje</a> 
+    <a class="btn btn-primary ms-md-2" role="button" href="/app_blog/message_add/" style="background: #49535c;border-color: rgb(31, 35, 44);color: rgb(248, 248, 248); background-color: rgb(95, 95, 133);">Enviar Mensaje</a> 
     <hr style="color: rgb(250, 250, 250);">
     {%if message_list%}
         {% for message in message_list %}
             <ul class="nav-item">
                 <div class="container" style="background: #505458;">
-                    <p style="text-align: left;margin: 3px;font-size: 30px;font-weight: bold;color: rgb(216, 216, 216);">Enviado a {{message.receiver}} <strong style="color:rgb(43, 157, 223);">por {{message.author}}</strong></p>
+                    <p style="text-align: left;margin: 3px;font-size: 30px;font-weight: bold;color: rgb(216, 216, 216);">Mensaje de {{message.author}}</strong></p>
                     <hr style="color: rgba(216, 216, 216, 0.189);"/>
                     <p style="margin: 23px;color: rgb(216, 216, 216);font-size: 19px;">{{message.text}}</p>
                     <hr style="color: rgba(216, 216, 216, 0.185);"/>
-                    <p style="font-size: 12px;font-weight: bold;color: rgb(216, 216, 216);">Send to {{message.receiver}}, date {{message.due_date}}</p>
+                    <p style="font-size: 12px;font-weight: bold;color: rgb(216, 216, 216);">Enviado por  <img class="rounded-circle" src="{{message.profile_picture}}" style= "width: 35px;height: 35px; line-height: 20px"></img> {{message.author}} - {{message.due_date}}</p>
                 </div>
             </a></ul>
 

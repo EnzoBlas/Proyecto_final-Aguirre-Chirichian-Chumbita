@@ -7,39 +7,40 @@
 </div> 
 
 <hr></hr>
+<form action="/app_blog/ranking_search" method="GET">
+    <div class="d-flex justify-content-center align-items-center content">
+    <p style="text-align: center;margin: 3px;font-size: 20px;font-weight: bold;color: rgb(187,187,187);">Buscar valoraciones anteriores</p>
+    <input type="text" name="all_search" id="ranking_name_or_body" >
+    <ul class="nav-item"></ul>
+    <ul class="nav-item"></ul>
+    <input type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)" value="Buscar" />
+    </div>
+</form>
 
-    <form action="/app_blog/ranking_search" method="GET">
-        <div class="d-flex justify-content-center align-items-center content">
-        <p style="text-align: center;margin: 3px;font-size: 20px;font-weight: bold;color: rgb(187,187,187);">Buscar valoraciones anteriores</p>
-        <input type="text" name="all_search" id="ranking_name_or_body" >
-        <ul class="nav-item"></ul>
-        <ul class="nav-item"></ul>
-        <input type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)" value="Buscar" />
-        </div>
-    </form>
-
-
-<div class="d-flex justify-content-center align-items-center content">
-    <hr style="color: #49535c;"/></hr>
-</div> 
-<div class="d-flex justify-content-center align-items-center content">
-    <hr></hr>
-    <h2>Da una valoración y una opinión de los cursos que has tenido</h2>
-</div>  
-
-<div class="d-flex justify-content-center align-items-center content">
-    <a class="btn btn-primary" role="button" href="/app_blog/ranking_add/" style="background: #49535c;border-color: rgb(13,14,16)"> Crear valoración </a>
-    <br>
-    <br>
-</div>  
+{% if user.is_authenticated %}
+    <div class="d-flex justify-content-center align-items-center content">
+        <hr style="color: #49535c;"/></hr>
+    </div> 
+    <div class="d-flex justify-content-center align-items-center content">
+        <hr></hr>
+        <h2>Da una valoración y una opinión de los cursos que has tenido</h2>
+    </div>  
+    <div class="d-flex justify-content-center align-items-center content">
+        <a class="btn btn-primary" role="button" href="/app_blog/ranking_add/" style="background: #49535c;border-color: rgb(13,14,16)"> Crear valoración </a>
+        <br>
+        <br>
+    </div>  
+{% endif %}
 
 <div class="d-flex justify-content-center align-items-center content">
     <hr style="color: #49535c;"/></hr>
 </div> 
 
 <p style="text-align: left;margin: 3px;font-size: 36px;font-weight: bold;color: rgb(187,187,187);">Cursos valorados</p>
+
 <hr></hr>
-    {%if ranking_list%}
+
+{%if ranking_list%}
         {% for ranking in ranking_list %}
             <ul class="nav-item"><a class="nav-link active" href="{% url 'app_blog:ranking-detail' ranking.id %}">
                 <div class="container" style="background: #505458;">
@@ -53,12 +54,15 @@
                 </div>
             </ul>
 
-            <hr style="color: rgba(42, 42, 42, 0.501);"/>
-            <hr style="color: rgba(42, 42, 42, 0.501);"/>
+            <hr style="color: rgba(42, 42, 42, 0.501);"></hr>
+            <hr style="color: rgba(42, 42, 42, 0.501);"></hr>
 
-            {% endfor %}
-            {%else%}    
-            <div class="d-flex justify-content-center align-items-center content">
-                <p style="text-align: center;margin: 3px;font-size: 20px;font-weight: bold;color: rgb(187,187,187);">No hay valoraciones disponibles</p>  
-    {%endif%}
+        {% endfor %}
+{%else%}    
+    <div class="d-flex justify-content-center align-items-center content">
+        <p style="text-align: center;margin: 3px;font-size: 20px;font-weight: bold;color: rgb(187,187,187);">No hay valoraciones disponibles</p>  
+    </div>
+{%endif%}
+    
+    
 {% endblock %}

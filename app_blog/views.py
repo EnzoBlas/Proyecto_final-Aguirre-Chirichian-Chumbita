@@ -179,7 +179,7 @@ def ranking_create(request):
                 ranking.save()
 
             context_dict = {}
-            return redirect ("app_blog:post-list")
+            return redirect ("app_blog:ranking-list")
     else: 
         context_dict = {}
         return redirect ("app_blog:avatar-load")
@@ -197,28 +197,35 @@ def ranking_create(request):
 
 @login_required
 def message_create(request):
-    if request.method == 'POST':
-        print(request)
-        message = Message(
-            author=request.user.username,
-            receiver=request.POST['selectReceiver'],
-            text=request.POST['messsage_text'],
-            )
-        message.save()
+    profile = Avatar.objects.filter(user=request.user.id)
+    if Avatar.objects.filter(user=request.user.id).exists() == True:
+        if request.method == 'POST':
+            print(request)
+            message = Message(
+                author=request.user.username,
+                receiver=request.POST['selectReceiver'],
+                text=request.POST['messsage_text'],
+                profile_picture=str(profile)[24:-3]
+                )
+            message.save()
 
-        messages = Message.objects.all()
-        message_list = []
-        for message in messages:
-            if message.receiver == request.user.username:
-                message_list.append(message)
-        context_dict = {
-            'message_list': message_list
-        }
-        return render(
-            request=request,
-            context=context_dict,
-            template_name="app_blog/message_list.html"
-        )
+            messages = Message.objects.all()
+            message_list = []
+            for message in messages:
+                if message.receiver == request.user.username:
+                    message_list.append(message)
+            context_dict = {
+                'message_list': message_list
+            }
+            return render(
+                request=request,
+                context=context_dict,
+                template_name="app_blog/message_list.html"
+            )
+    else: 
+        context_dict = {}
+        return redirect ("app_blog:avatar-load")
+
     message_form = Message(request.POST)
     User = get_user_model()
     user_list = User.objects.all()
@@ -227,43 +234,7 @@ def message_create(request):
         'user_list': user_list,
         'message_form': message_form
      }
-    return render(
-        request=request,
-        context=context_dict,
-        template_name='app_blog/message_form.html'
-    )
-@login_required
-def message_create(request):
-    if request.method == 'POST':
-        print(request)
-        message = Message(
-            author=request.user.username,
-            receiver=request.POST['selectReceiver'],
-            text=request.POST['messsage_text'],
-            )
-        message.save()
 
-        messages = Message.objects.all()
-        message_list = []
-        for message in messages:
-            if message.receiver == request.user.username:
-                message_list.append(message)
-        context_dict = {
-            'message_list': message_list
-        }
-        return render(
-            request=request,
-            context=context_dict,
-            template_name="app_blog/message_list.html"
-        )
-    message_form = Message(request.POST)
-    User = get_user_model()
-    user_list = User.objects.all()
-    print(user_list)
-    context_dict = {
-        'user_list': user_list,
-        'message_form': message_form
-     }
     return render(
         request=request,
         context=context_dict,

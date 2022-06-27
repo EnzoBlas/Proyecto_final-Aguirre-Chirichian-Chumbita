@@ -68,4 +68,5 @@ class Message(models.Model):
     receiver = models.CharField(max_length=30)
     text = models.TextField()
     due_date = models.DateField(auto_now=True)
+    profile_picture = models.CharField(max_length=300, null=True, blank=True)
     
