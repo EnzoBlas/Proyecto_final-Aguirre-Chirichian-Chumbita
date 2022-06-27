@@ -25,10 +25,17 @@
         {% for post in post_list %}
             <ul class="nav-item"><a class="nav-link active" href="{% url 'app_blog:post-detail' post.id %}">
                 <div class="container" style="background: #505458;">
-                <p style="text-align: left;margin: 3px;font-size: 30px;font-weight: bold;color: rgb(216, 216, 216);">{{post.title}}</p>
-                <p style="margin: 23px;color: rgb(216, 216, 216);font-size: 19px;">{{post.content}}</p>
-                <p style="font-size: 12px;font-weight: bold;color: rgb(216, 216, 216);">{{post.author}} - {{post.due_date}}</p>
-                
+                    <p style="text-align: left;margin: 3px;font-size: 30px;font-weight: bold;color: rgb(216, 216, 216);">{{post.title}}</p>
+                    <p style="text-align: left;margin: 3px;font-size: 30px;font-weight: bold;color: rgb(216, 216, 216);">{{post.subtitle}}</p>
+                    <hr style="color: rgba(216, 216, 216, 0.189);"/>
+                    <p style="margin: 23px;color: rgb(216, 216, 216);font-size: 19px;">{{post.content}}</p>
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link active" href="/media/{{post.image_post}}"><img src="/media/{{post.image_post}}" style="width: 50%;height: 50%;"></a></li>
+                    </ul>
+                    <hr style="color: rgba(216, 216, 216, 0.185);"/>
+                    <img class="rounded-circle" src="{{post.profile_picture}}" style= "width: 35px;height: 35px; line-height: 20px"></img>
+                    <p style="font-size: 12px;font-weight: bold;color: rgb(216, 216, 216);">{{post.author}} - {{post.due_date}} </p>
+                </div>
             </a></ul>
 
             <hr style="color: rgba(216, 216, 216, 0.501);"/>

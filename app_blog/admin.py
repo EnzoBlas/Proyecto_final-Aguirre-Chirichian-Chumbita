@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Post, Userpost
-from .models import Ranking
+from .models import Post, Userpost, Ranking, Comment, Message, Avatar
 
 # Register your models here.
 
@@ -8,3 +7,7 @@ from .models import Ranking
 admin.site.register(Post)
 admin.site.register(Userpost)
 admin.site.register(Ranking)
+admin.site.register(Comment)
+admin.site.register(Message)
+admin.site.register(Avatar)
+
