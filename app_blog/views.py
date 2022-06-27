@@ -1,4 +1,5 @@
 import os
+from tkinter.tix import Form
 
 from django.shortcuts import render
 from django.db.models import Q
@@ -6,9 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.forms.models import model_to_dict
 from django.contrib import messages
 
+from app_blog.models import Post,Ranking,Comment,CommentRank,Avatar
+from app_blog.form import UserRegisterForm, PostForm, RankingForm, CommentForm, AvatarForm, UserEditForm
 
-from app_blog.models import Post, Ranking, Avatar
-from app_blog.form import UserRegisterForm, PostForm, RankingForm, UserEditForm, AvatarForm
 
 def get_avatar(request):
     avatars = Avatar.objects.filter(user=request.user.id)
@@ -121,6 +122,49 @@ def post_create(request):
     )
 
 @login_required
+def comment_post(request,pk):
+    post = Post.objects.get(pk=pk)
+    comments = Comment.objects.filter(post_id=pk)
+    comment_create = CommentForm(request.POST)
+    if request.method == 'POST':
+        if comment_create.is_valid():
+            data    = comment_create.cleaned_data
+            comment = Comment(
+                author = request.user.username,
+                text = data['content'],
+                post_id = pk
+                )
+            
+            comment.save()
+            comments = Comment.objects.filter(post_id=pk)
+
+            context_dict = {
+                'comment_form': comment_create,
+                'post'   : post,
+                'comments' : comments
+            }
+            return render(
+                request      =request,
+                context      =context_dict,
+                template_name="app_blog/post_detail.html"
+            )
+
+    
+    context_dict = {
+        'comment_form': comment_create,
+        'comments'    : comments,
+        'post'        : post 
+     }
+    return render(
+        request      = request,
+        context      = context_dict,
+        template_name= 'app_blog/post_detail.html'
+    )
+
+
+
+
+@login_required
 def ranking_create(request):
     profile = Avatar.objects.filter(user=request.user.id)
     if request.method == 'POST':
@@ -155,6 +199,46 @@ def ranking_create(request):
         context=context_dict,
         template_name='app_blog/ranking_form.html'
     )
+
+@login_required
+def comment_rank(request,pk):
+    ranking = Ranking.objects.get(pk=pk)
+    comments = CommentRank.objects.filter(rank_id=pk)
+    comment_create = CommentForm(request.POST)
+    if request.method == 'POST':
+        if comment_create.is_valid():
+            data    = comment_create.cleaned_data
+            comment = CommentRank(
+                author = request.user.username,
+                text = data['content'],
+                rank_id = pk
+                )
+            
+            comment.save()
+            comments = CommentRank.objects.filter(rank_id=pk)
+
+            context_dict = {
+                'comment_form': comment_create,
+                'ranking'   : ranking,
+                'comments' : comments
+            }
+            return render(
+                request      =request,
+                context      =context_dict,
+                template_name="app_blog/ranking_detail.html"
+            )
+
+    
+    context_dict = {
+        'comment_form': comment_create,
+        'comments'    : comments,
+        'ranking'        : ranking 
+     }
+    return render(
+        request      = request,
+        context      = context_dict,
+        template_name= 'app_blog/ranking_detail.html'
+    )
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -166,9 +250,9 @@ class RankingListView(ListView):
     model = Ranking
     template_name = "app_blog/ranking-list.html"
 
-class RankingDetailView(DetailView):
-    model = Ranking
-    template_name = "app_blog/ranking_detail.html"
+# class RankingDetailView(DetailView):
+#     model = Ranking
+#     template_name = "app_blog/ranking_detail.html"
   
 class RankingUpdateView(LoginRequiredMixin, UpdateView):
     model = Ranking
@@ -187,9 +271,15 @@ class PostListView(ListView):
     model = Post
     template_name = "app_blog/post-list.html"
 
-class PostDetailView(DetailView):
-    model = Post
-    template_name = "app_blog/post_detail.html"
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = "app_blog/comment_form.html"
+    model = Comment
+    success_url = reverse_lazy('app_blog:post-list' )
+    fields = ['text']
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    success_url = reverse_lazy('app_blog:post-list')
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "app_blog/post_form.html"
@@ -266,6 +356,12 @@ def register(request):
         context={"form":form, "status": status},
         template_name="app_blog/register.html",
     )
+
+def aboutsView(request):
+
+    return render(
+        request=request,
+        template_name="app_blog/abouts.html",)
 
 @login_required
 def user_update(request):

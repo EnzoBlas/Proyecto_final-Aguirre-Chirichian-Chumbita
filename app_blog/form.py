@@ -1,3 +1,4 @@
+from textwrap import TextWrapper
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
@@ -14,6 +15,9 @@ class PostForm(ModelForm):
         model = Post
         fields = ['title', 'sub_title', 'content', 'image_post']
         help_texts = {k: "" for k in fields}
+
+class CommentForm(forms.Form):
+    content = forms.CharField(widget=forms.Textarea) 
 
 class UserRegisterForm(UserCreationForm):
 

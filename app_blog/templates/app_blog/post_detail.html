@@ -10,14 +10,40 @@
             <p style="font-size: 12px;font-weight: bold;color: rgb(187,187,187);">{{post.author_id}}-{{post.due_date}}</p>
             <hr style="color: rgba(216, 216, 216, 0.501);"/>
 
-            {% if user.is_authenticated %}
+            {% if request.user.username == post.author %}
             <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link active" href="{% url 'app_blog:post-update' post.id %}"><img src="{% static 'app_blog/assets/img/edit.png' %}" style="width: 20px;height: 20px;">
                 <p style="font-size: 16px;font-weight: bold;color: rgb(187,187,187);">Editar publicación </p>       
             <li class="nav-item"><a class="nav-link active" href="{% url 'app_blog:post-delete' post.id %}"><img src="{% static 'app_blog/assets/img/delete.png' %}" style="width: 20px;height: 20px;">
                 <p style="font-size: 16px;font-weight: bold;color: rgb(187,187,187);">Borrar publicación </p>
+            </li></a>
             </ul>
+            {%endif%}
+        <form action="" method="POST">
+            {% csrf_token %}
+            
+            {{ comment_form.as_p }}
+             
+            <input type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)" value="Commentar" />
+                
+        </form>
+
+
+            {% if comments %}
+                {% for comment in comments %}
+
+                    <p style="font-size: 12px;font-weight: bold;color: rgb(187,187,187);">{{comment.author}}-{{comment.due_date}}</p>
+                    <p style="margin: 23px;color: rgb(2, 2, 2);font-size: 19px;background-color: rgb(221, 207, 207);">{{comment.text}}</p>
+                    <hr style="color: rgba(216, 216, 216, 0.501);"/>
+                    {% if request.user.username == comment.author %}
+                    <nav class="navbar navbar-expand-md py-3">
+                        <a class="nav-link active" href="{% url 'app_blog:comment-update' comment.id %}">Editar</a>
+                        <a class="nav-link active" href="{% url 'app_blog:comment-delete' comment.id %}">Borrar</a>
+                    </nav>
+                    {% endif %}
+                {% endfor %}
             {% endif %}
+
         </div>
 
         
