@@ -22,7 +22,7 @@ def get_avatar(request):
 
 def index(request):
     avatar = get_avatar(request)
-    posts = Post.objects.all().order_by('-pk')[0:5]
+    posts = Post.objects.all().order_by('-pk')[0:6]
     context_dict = {
         'posts': posts,
         **avatar
@@ -33,19 +33,6 @@ def index(request):
         context=context_dict,
         template_name="app_blog/home.html",
     )
-
-def get_avatar(request):
-    avatars = Avatar.objects.all()
-    search_avatar = []
-    for avatar in avatars:
-        if avatar.user.username == request.user.username:
-            search_avatar.append(avatar)
-    if avatars.exists():
-        try:
-            return {"url": f'http://{request.get_host()}/app_blog{search_avatar[0].image.url}'}
-        except:
-            return {"url": ""}
-    return {}
 
 def profile(request):
     avatar = get_avatar(request)
@@ -117,15 +104,9 @@ def post_create(request):
 
                 post.save()
 
-                posts = Post.objects.all()
-                context_dict = {
-                    'post_list': posts
-                }
-                return render(
-                    request=request,
-                    context=context_dict,
-                    template_name="app_blog/post_list.html"
-                )
+            context_dict = {}
+            return redirect ("app_blog:post-list")
+
     else:
         context_dict = {}
         return redirect ("app_blog:avatar-load")
@@ -139,7 +120,7 @@ def post_create(request):
         context=context_dict,
         template_name='app_blog/post_form.html'
     )
-
+    
 @login_required
 def comment_post(request,pk):
     post = Post.objects.get(pk=pk)
@@ -197,15 +178,8 @@ def ranking_create(request):
                     )
                 ranking.save()
 
-                rankings = Ranking.objects.all()
-                context_dict = {
-                    'ranking_list': rankings
-                }
-                return render(
-                    request=request,
-                    context=context_dict,
-                    template_name="app_blog/ranking_list.html"
-                )
+            context_dict = {}
+            return redirect ("app_blog:post-list")
     else: 
         context_dict = {}
         return redirect ("app_blog:avatar-load")
@@ -357,10 +331,6 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-class RankingListView(ListView):
-    model = Ranking
-    template_name = "app_blog/ranking-list.html"
 
 class RankingUpdateView(LoginRequiredMixin, UpdateView):
     model = Ranking
@@ -521,4 +491,3 @@ def avatar_load(request):
         context={"form": form,},
         template_name="app_blog/avatar_form.html",
     )
-

@@ -16,10 +16,6 @@ class PostForm(ModelForm):
         fields = ['title', 'sub_title', 'content', 'image_post']
         help_texts = {k: "" for k in fields}
 
-class PostForm(forms.Form):
-    title = forms.CharField(max_length=40) 
-    content = forms.CharField(widget=forms.Textarea)
-
 class MessageForm(forms.Form):
     receiver = forms.CharField(max_length=30)
     text = forms.CharField(max_length=40) 
