@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 app_name ='app_blog'
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('abouts/',views.aboutsView,name='abouts'),
+    path('abouts/',views.aboutsView, name='abouts'),
     path('avatar/load', views.avatar_load, name='avatar-load'),
     path("", views.index, name='home'),
     path('login/', views.login_request, name='user-login'),
@@ -28,6 +28,8 @@ urlpatterns = [
     path('ranking/<int:pk>/detail', views.comment_rank, name='ranking-detail'),
     path('ranking/<int:pk>/update', views.RankingUpdateView.as_view(), name='ranking-update'),
     path('ranking/<int:pk>/delete', views.RankingDeleteView.as_view(), name='ranking-delete'),
+    path('message/', views.message_list, name='message-list'),
+    path('message_add/', views.message_create, name='message-add'),
     path('register', views.register, name='user-register'),
 ]
 

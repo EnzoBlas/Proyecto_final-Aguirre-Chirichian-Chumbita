@@ -1,0 +1,26 @@
+{% extends "app_blog/index.html" %}
+{% load static %}
+{% block app_blog_content %} 
+<h2>Mensajería</h2>
+<hr></hr>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <p>Seleccione Usuario</p>
+    <select name="selectReceiver">
+        
+        {% for user in user_list%}
+            <option value="{{user}}">{{user}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <br>
+    <p>Mensaje</p>
+    <textarea type="text" name="messsage_text" rows="10" cols="80">¿Qué deseas decir?</textarea>
+    <br>
+    {{ form.as_p }}
+    <br>
+    <input type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)" value="Enviar mensaje" />
+
+</form>
+{% endblock %}

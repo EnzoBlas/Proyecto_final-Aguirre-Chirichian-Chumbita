@@ -1,14 +1,16 @@
 import os
+import re
+from tkinter.tix import Form
 
 from django.shortcuts import render
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.forms.models import model_to_dict
 from django.contrib import messages
-from django.db.models import Count
+from django.contrib.auth import get_user_model
 
 
-from app_blog.models import Post,Ranking,Comment,CommentRank,Avatar
+from app_blog.models import Post,Ranking,Comment,CommentRank,Avatar,Message
 from app_blog.form import UserRegisterForm, PostForm, RankingForm, CommentForm, AvatarForm, UserEditForm
 
 
@@ -32,9 +34,22 @@ def index(request):
         template_name="app_blog/home.html",
     )
 
+def get_avatar(request):
+    avatars = Avatar.objects.all()
+    search_avatar = []
+    for avatar in avatars:
+        if avatar.user.username == request.user.username:
+            search_avatar.append(avatar)
+    if avatars.exists():
+        try:
+            return {"url": f'http://{request.get_host()}/app_blog{search_avatar[0].image.url}'}
+        except:
+            return {"url": ""}
+    return {}
+
 def profile(request):
     avatar = get_avatar(request)
-
+    print(avatar)
     if type(avatar) == None:
         context_dict ={}
     else:
@@ -207,6 +222,98 @@ def ranking_create(request):
     )
 
 @login_required
+def message_create(request):
+    if request.method == 'POST':
+        print(request)
+        message = Message(
+            author=request.user.username,
+            receiver=request.POST['selectReceiver'],
+            text=request.POST['messsage_text'],
+            )
+        message.save()
+
+        messages = Message.objects.all()
+        message_list = []
+        for message in messages:
+            if message.receiver == request.user.username:
+                message_list.append(message)
+        context_dict = {
+            'message_list': message_list
+        }
+        return render(
+            request=request,
+            context=context_dict,
+            template_name="app_blog/message_list.html"
+        )
+    message_form = Message(request.POST)
+    User = get_user_model()
+    user_list = User.objects.all()
+    print(user_list)
+    context_dict = {
+        'user_list': user_list,
+        'message_form': message_form
+     }
+    return render(
+        request=request,
+        context=context_dict,
+        template_name='app_blog/message_form.html'
+    )
+@login_required
+def message_create(request):
+    if request.method == 'POST':
+        print(request)
+        message = Message(
+            author=request.user.username,
+            receiver=request.POST['selectReceiver'],
+            text=request.POST['messsage_text'],
+            )
+        message.save()
+
+        messages = Message.objects.all()
+        message_list = []
+        for message in messages:
+            if message.receiver == request.user.username:
+                message_list.append(message)
+        context_dict = {
+            'message_list': message_list
+        }
+        return render(
+            request=request,
+            context=context_dict,
+            template_name="app_blog/message_list.html"
+        )
+    message_form = Message(request.POST)
+    User = get_user_model()
+    user_list = User.objects.all()
+    print(user_list)
+    context_dict = {
+        'user_list': user_list,
+        'message_form': message_form
+     }
+    return render(
+        request=request,
+        context=context_dict,
+        template_name='app_blog/message_form.html'
+    )
+@login_required
+def message_list(request):
+    if request.method == 'GET':
+        messages = Message.objects.all()
+        message_list = []
+        for message in messages:
+            if message.receiver == request.user.username:
+                message_list.append(message)
+        context_dict = {
+            'message_list': message_list
+        }
+        return render(
+            request=request,
+            context=context_dict,
+            template_name="app_blog/message_list.html"
+        )
+
+
+@login_required
 def comment_rank(request,pk):
     ranking = Ranking.objects.get(pk=pk)
     comments = CommentRank.objects.filter(rank_id=pk)
@@ -251,7 +358,6 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
 class RankingListView(ListView):
     model = Ranking
     template_name = "app_blog/ranking-list.html"
@@ -295,6 +401,10 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('app_blog:post-list')
 
+class MessagesListView(ListView):
+    model = Message
+    template_name = "app_blog/message-list.html"
+
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import redirect
@@ -335,6 +445,7 @@ def login_request(request):
         template_name="app_blog/login.html",
     )
 
+
 def logout_request(request):
       logout(request)
       return redirect("app_blog:home")
@@ -360,7 +471,8 @@ def aboutsView(request):
 
     return render(
         request=request,
-        template_name="app_blog/abouts.html",)
+        template_name="app_blog/abouts.html",
+    )
 
 @login_required
 def user_update(request):
