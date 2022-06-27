@@ -30,5 +30,5 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
         help_texts = {k: "" for k in fields}
 
-class Comment(forms.Form):
+class CommentForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea)

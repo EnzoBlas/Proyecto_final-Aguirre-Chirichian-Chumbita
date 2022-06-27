@@ -4,8 +4,8 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 
-from app_blog.models import Post,Ranking
-from app_blog.form import UserRegisterForm, PostForm, RankingForm
+from app_blog.models import Post,Ranking,Comment
+from app_blog.form import UserRegisterForm, PostForm, RankingForm, CommentForm
 
 
 def index(request):
@@ -56,7 +56,7 @@ def ranking_search(request):
     )
 
 @login_required
-def post_create(request):
+def post_create(request,):
     if request.method == 'POST':
         post_create = PostForm(request.POST)
         if post_create.is_valid():
@@ -87,6 +87,49 @@ def post_create(request):
         context=context_dict,
         template_name='app_blog/post_form.html'
     )
+
+@login_required
+def comment_post(request,pk):
+    post = Post.objects.get(pk=pk)
+    comments = Comment.objects.filter(post_id=pk)
+    comment_create = CommentForm(request.POST)
+    if request.method == 'POST':
+        if comment_create.is_valid():
+            data    = comment_create.cleaned_data
+            comment = Comment(
+                author = request.user.username,
+                text = data['content'],
+                post_id = pk
+                )
+            
+            comment.save()
+            comments = Comment.objects.filter(post_id=pk)
+
+            context_dict = {
+                'comment_form': comment_create,
+                'post'   : post,
+                'comments' : comments
+            }
+            return render(
+                request      =request,
+                context      =context_dict,
+                template_name="app_blog/post_detail.html"
+            )
+
+    
+    context_dict = {
+        'comment_form': comment_create,
+        'comments'    : comments,
+        'post'        : post 
+     }
+    return render(
+        request      = request,
+        context      = context_dict,
+        template_name= 'app_blog/post_detail.html'
+    )
+
+
+
 
 @login_required
 def ranking_create(request):
@@ -158,9 +201,15 @@ class PostListView(ListView):
     model = Post
     template_name = "app_blog/post-list.html"
 
-class PostDetailView(DetailView):
-    model = Post
-    template_name = "app_blog/post_detail.html"
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = "app_blog/comment_form.html"
+    model = Comment
+    success_url = reverse_lazy('app_blog:post-list')
+    fields = ['text']
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    success_url = reverse_lazy('app_blog:post-list')
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "app_blog/post_form.html"
@@ -228,3 +277,4 @@ def register(request):
         context={"form":form, "status": status},
         template_name="app_blog/register.html",
     )
+

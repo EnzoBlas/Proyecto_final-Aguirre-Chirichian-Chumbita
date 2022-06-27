@@ -36,3 +36,7 @@ class Comment(models.Model):
     author = models.CharField(max_length=30)
     text   = models.TextField()
     due_date = models.DateField(auto_now=True)
+    post_id = models.IntegerField(max_length=30)
+
+    class Meta:
+        ordering = ['-due_date']
