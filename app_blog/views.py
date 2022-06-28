@@ -96,10 +96,10 @@ def post_create(request):
                 image = request.FILES.get('image_post')
 
                 # Una pequeña muestra de procesos de unit test
-                KEY_LEN = 20
-                char_list = [random.choice((string.ascii_letters + string.digits)) for _ in range(KEY_LEN)]
-                mock_name = ''.join(char_list)
-                print(f'----------> Prueba con: {mock_name}')
+                #KEY_LEN = 20
+                #char_list = [random.choice((string.ascii_letters + string.digits)) for _ in range(KEY_LEN)]
+                #mock_name = ''.join(char_list)
+                #print(f'----------> Prueba con: {mock_name}')
                 
                 post = Post(
                     title=data['title'],
