@@ -8,7 +8,9 @@
             <p style="text-align: left;margin: 3px;font-size: 34px;font-weight: bold;color: rgb(187,187,187);">{{post.title}}</p>
             <p style="margin: 23px;color: rgb(187,187,187);font-size: 19px;">{{post.content}}</p>
             <p style="font-size: 12px;font-weight: bold;color: rgb(187,187,187);">{{post.author_id}}-{{post.due_date}}</p>
+            {%if post.image_post%}
             <ul class="nav-item"><a class="nav-link active" href="/media/{{post.image_post}}"><img src="/media/{{post.image_post}}" style="width: 75%;height: 75%;"></a></ul>
+            {%endif%}
             <hr style="color: rgba(216, 216, 216, 0.501);"/>
 
             {% if request.user.username == post.author or request.user.is_superuser == True %}
