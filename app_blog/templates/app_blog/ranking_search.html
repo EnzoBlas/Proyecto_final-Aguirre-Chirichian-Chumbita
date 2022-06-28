@@ -23,14 +23,18 @@
     {% for ranking in rankings %}
     <ul class="nav-item"><a class="nav-link active" href="{% url 'app_blog:ranking-detail' ranking.id %}">
         <div class="container" style="background: #505458;">
-        <p style="text-align: left;margin: 3px;font-size: 30px;font-weight: bold;color: rgb(216, 216, 216);">{{ranking.name_course}}</p>
-        <p style="margin: 23px;color: rgb(216, 216, 216);font-size: 19px;">{{ranking.opinion}}</p>
-        <p style="font-size: 12px;font-weight: bold;color: rgb(216, 216, 216);">{{ranking.author}} - {{ranking.due_date}}</p>
+            <p style="text-align: left;margin: 3px;font-size: 30px;font-weight: bold;color: rgb(216, 216, 216);">Curso de {{ranking.name_course}}</p>
+            <hr style="color: rgba(216, 216, 216, 0.189);"/>
+            <p style="margin: 23px;color: rgb(216, 216, 216);font-size: 19px;">{{ranking.opinion}}</p>
+            <p style="font-size: 14px;font-weight: bold;color: rgb(209, 194, 58);">   Puntuacion: {{ranking.score}} de 10 </p>
+            <hr style="color: rgba(216, 216, 216, 0.185);"/>
+            <img class="rounded-circle" src="{{ranking.profile_picture}}" style= "width: 35px;height: 35px; line-height: 20px"></img>
+            <p style="font-size: 12px;font-weight: bold;color: rgb(216, 216, 216);">{{ranking.author}} - {{ranking.due_date}}</p>
+        </div>
+    </ul>
 
-    </a></ul>
-
-    <hr style="color: rgba(216, 216, 216, 0.501);"/>
-
+    <hr style="color: rgba(42, 42, 42, 0.501);"></hr>
+    <hr style="color: rgba(42, 42, 42, 0.501);"></hr>
     {% endfor %}
 {% endif %}
 {% endblock %}
