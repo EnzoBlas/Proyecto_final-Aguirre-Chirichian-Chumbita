@@ -30,6 +30,7 @@ urlpatterns = [
     path('ranking/<int:pk>/delete', views.RankingDeleteView.as_view(), name='ranking-delete'),
     path('message/', views.message_list, name='message-list'),
     path('message_add/', views.message_create, name='message-add'),
+    path('admin_register', views.admin_register, name='admin-register'),
     path('register', views.register, name='user-register'),
 ]
 

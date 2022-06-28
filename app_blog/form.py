@@ -38,6 +38,20 @@ class UserRegisterForm(UserCreationForm):
         fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
         help_texts = {k: "" for k in fields}
 
+class UserAdminForm(UserCreationForm):
+
+    first_name = forms.CharField(label='Nombre', min_length=3, max_length=12)
+    last_name = forms.CharField(label='Apellido', min_length=3, max_length=12)
+    username = forms.CharField(label='Usuario', min_length=8, max_length=12)
+    email = forms.EmailField(label='Correo electrónico')
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Repetir la contraseña', widget=forms.PasswordInput)
+    is_superuser = True
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2', 'is_superuser']
+        help_texts = {k: "" for k in fields}
+
 class UserEditForm(UserCreationForm):
 
     first_name = forms.CharField(label='Nombre', min_length=3, max_length=12)

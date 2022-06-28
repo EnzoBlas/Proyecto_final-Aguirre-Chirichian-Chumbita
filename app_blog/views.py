@@ -1,6 +1,4 @@
 import os
-import re
-from tkinter.tix import Form
 
 from django.shortcuts import render
 from django.db.models import Q
@@ -9,9 +7,8 @@ from django.forms.models import model_to_dict
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 
-
 from app_blog.models import Post,Ranking,Comment,CommentRank,Avatar,Message
-from app_blog.form import UserRegisterForm, PostForm, RankingForm, CommentForm, AvatarForm, UserEditForm
+from app_blog.form import UserRegisterForm, PostForm, RankingForm, CommentForm, AvatarForm, UserEditForm, UserAdminForm
 
 
 def get_avatar(request):
@@ -407,6 +404,24 @@ def register(request):
         context={"form":form, "status": status},
         template_name="app_blog/register.html",
     )
+
+def admin_register(request):
+    status=None
+    if request.method == 'POST':
+        form = UserAdminForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect ("app_blog:avatar-load")
+        else:
+            status=[1]
+
+    form = UserAdminForm()
+    return render(
+        request=request,
+        context={"form":form, "status": status},
+        template_name="app_blog/register-admin.html",
+    )
+
 
 def aboutsView(request):
 

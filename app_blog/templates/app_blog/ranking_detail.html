@@ -19,6 +19,15 @@
                 <p style="font-size: 16px;font-weight: bold;color: rgb(187,187,187);">Borrar valoración </p>
             </ul></a>
             {% endif %}
+
+            {% if request.user.is_superuser == True %}
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link active" href="{% url 'app_blog:ranking-update' ranking.id %}"><img src="{% static 'app_blog/assets/img/edit.png' %}" style="width: 20px;height: 20px;">
+                    <p style="font-size: 16px;font-weight: bold;color: rgb(187,187,187);">Editar valoración </p>       
+                <li class="nav-item"><a class="nav-link active" href="{% url 'app_blog:ranking-delete' ranking.id %}"><img src="{% static 'app_blog/assets/img/delete.png' %}" style="width: 20px;height: 20px;">
+                    <p style="font-size: 16px;font-weight: bold;color: rgb(187,187,187);">Borrar valoración </p>
+                </ul></a>
+            {% endif %}
         <form action="" method="POST">
             {% csrf_token %}
             

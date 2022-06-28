@@ -1,0 +1,19 @@
+{% extends "app_blog/index.html" %}
+{% load static %}
+{% block app_blog_content %} 
+
+<h2>Registre su usuario</h2>
+<hr></hr>
+
+{% for n in status %}
+    <p style="color: #FA5656"> Los datos de registro no se ingresaron correctamente.</p>
+    {% endfor %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" class="btn btn-primary" style="background: #49535c;border-color: rgb(13,14,16)" value="Registrar usuario" />
+</form>
+
+
+{% endblock %}
