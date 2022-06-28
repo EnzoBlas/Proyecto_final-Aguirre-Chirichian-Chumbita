@@ -12,9 +12,8 @@ Se tomo la ultima entrega de la clase como modelo para seguir trabajando,
 
 Fabrizio: manejo del template. Creacion de publicacione, y comentarios que se relacionaran entre si y agregarle el crud, sus respectivos modelos views,
 
-Enzo : Armado los primeros pasos de iniciar el projecto, creacion del crud principal que se tomaria como modelo,
-
-       Creacion del usuario y administrador con todas sus funciones,test
+Enzo : 
+      Armado los primeros pasos de iniciar el projecto, creacion del crud principal que se tomaria como modelo, Creacion del usuario y administrador con todas sus funciones,test
 
 Fabiana: Creacion del ranking y sus respectivos Views y models, creacion de app de mensajes con sus respectivos views,
 
