@@ -10,7 +10,7 @@ Fabiana Aguirre
 - Se tomo la ultima entrega de la clase como modelo para seguir trabajando,
 
 ```bash
-Fabrizio: Manejo del template. Creacion de publicaciones, y comentarios que se relacionaran entre si y agregarle el crud, sus respectivos modelos views,
+Fabrizio: Manejo del template. Creacion de publicaciones,comentarios manejo de sus relaciones y Permisos junto al CRUD, sus respectivos modelos views,Comentarios y permisos de Ranking
 
 Enzo : Armado del diseño web de origen; creacion del CRUD de post y ranking; login, logout y registros; creacion de los avatares con sus respectivo CRUD y 
 su enlace a los post, rankings, comentarios; diseño UX/UI en los templates.
