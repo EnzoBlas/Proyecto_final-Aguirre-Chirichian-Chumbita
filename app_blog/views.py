@@ -1,4 +1,8 @@
 import os
+import re
+import random
+import string
+from tkinter.tix import Form
 
 from django.shortcuts import render
 from django.db.models import Q
@@ -90,6 +94,13 @@ def post_create(request):
             if post_create.is_valid():
                 data = post_create.cleaned_data
                 image = request.FILES.get('image_post')
+
+                # Una pequeña muestra de procesos de unit test
+                KEY_LEN = 20
+                char_list = [random.choice((string.ascii_letters + string.digits)) for _ in range(KEY_LEN)]
+                mock_name = ''.join(char_list)
+                print(f'----------> Prueba con: {mock_name}')
+                
                 post = Post(
                     title=data['title'],
                     sub_title=data['sub_title'],
