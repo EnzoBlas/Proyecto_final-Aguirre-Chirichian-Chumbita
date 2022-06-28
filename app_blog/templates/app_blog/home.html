@@ -40,8 +40,10 @@
             <hr style="color: rgba(216, 216, 216, 0.189);"/>
             <p style="margin-left: 23px;color: rgb(216, 216, 216);font-size: 20px;">{{post.content}}</p>
             <ul class="navbar-nav">
+                {%if post.image_post%} 
                 <li class="nav-item"><a class="nav-link active" href="/media/{{post.image_post}}"><img src="/media/{{post.image_post}}" style="width: 25%;height: 25%;"></a></li>
-            </ul>
+                {%endif%}
+             </ul>
             <hr style="color: rgba(216, 216, 216, 0.185);"/>
             <img class="rounded-circle" src="{{post.profile_picture}}" style= "width: 35px;height: 35px; line-height: 20px"></img>
             <p style="font-size: 12px;font-weight: bold;color: rgb(216, 216, 216);">{{post.author}} - {{post.due_date}}</p>
