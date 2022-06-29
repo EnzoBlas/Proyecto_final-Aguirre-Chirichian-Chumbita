@@ -26,7 +26,7 @@ Al avanzar con el projecto nos mantuvimos en contacto y muchos models y views or
 
 ```bash
 
-Nota tubimos problema con el manejo del desbug en False para mostrar error 404, se debe cambiar en setting "Desbug = False" para probar el error404
+Nota: tubimos problema con el manejo del desbug en False para mostrar error 404, se debe cambiar en setting "Desbug = False" para probar el error404
 
 python manage.py runserver --insecure
 
