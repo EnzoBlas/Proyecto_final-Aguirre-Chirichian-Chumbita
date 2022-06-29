@@ -488,3 +488,11 @@ def avatar_load(request):
         context={"form": form,},
         template_name="app_blog/avatar_form.html",
     )
+
+from django.http import HttpResponse, HttpResponseNotFound
+
+
+
+def error_404_view(request,exception):
+    html = '<html><body>ERROR 404 <br>Esta pagina se encuentra en construccion<br></body><a href="/app_blog/">Regresar al Inicio</a></html>'
+    return HttpResponse(html)

@@ -1,4 +1,6 @@
+from django.views.static import serve
 from app_blog import views
+from app_blog.views import error_404_view
 from django.urls import path
 from django.contrib import admin
 from django.conf import settings
@@ -33,6 +35,11 @@ urlpatterns = [
     path('admin_register', views.admin_register, name='admin-register'),
     path('register', views.register, name='user-register'),
 ]
+
+from django.conf.urls import handler404
+from django.conf.urls import handler500
+
+handler404 = 'app_blog.views.error_404_view'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
